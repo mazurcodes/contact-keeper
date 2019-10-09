@@ -7,15 +7,12 @@ const userSchema = new Schema({
   },
   email: {
     type: String,
-    required: [true, "Error email"]
+    required: [true, "Error email"],
+    unique: true
   },
   password: {
     type: String,
     required: [true, "Error password"]
-  },
-  contacts: {
-    type: Array,
-    default: []
   },
   date: {
     type: Date,

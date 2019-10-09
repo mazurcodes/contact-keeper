@@ -8,7 +8,8 @@ const app = express();
 // Database
 mongoose.connect(DB_CONNECTION, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useCreateIndex: true
 }, (err) => {
   if (err) return console.log("DB connection error: ", err);
   console.log("We're connected to DB");

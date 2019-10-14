@@ -5,22 +5,24 @@ const jwt = require("jsonwebtoken");
 const config = require("config");
 const { check, validationResult } = require("express-validator");
 const User = require("../models/User");
+const auth = require("../middleware/auth");
 
 // @route     GET api/auth
 // @desc      Get logged in user
 // @access    Private
-
-router.get("/", async (req, res) => {
-  const authHeader = req.headers.authorization.split(" ")[1];
-  const token = jwt.verify(authHeader, config.get('jwtSecret'));
-  console.log(token.user.id);
-  res.send("Henlo " + token.user.id)
+router.get("/", auth, async (req, res) => {
+  try {
+    const foundUser = await User.findById(req.user.id).select("-password");
+    res.status(200).json(foundUser);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "No such user" });
+  }
 });
 
 // @route     POST api/auth
 // @desc      Auth user & get token
 // @access    Public
-
 router.post(
   "/",
   [

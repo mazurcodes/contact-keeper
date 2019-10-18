@@ -1,8 +1,17 @@
-import React from "react";
-import PropTypes from 'prop-types'
+import React, { useContext } from "react";
+import PropTypes from "prop-types";
+import ContactContext from "../../context/contacts/ContactContext";
 
+const ContactItem = ({ contact: { id, name, email, phone, type } }) => {
+  const { deleteContact, setCurrent, clearCurrent } = useContext(ContactContext);
 
-const ContactItem = ({ contact: { name, email, phone, type } }) => {
+  const onDelete = () => {
+    clearCurrent();
+    deleteContact(id);
+  }
+
+  const onEdit = () => setCurrent(id);
+
   return (
     <div className="card bg-light">
       <h3 className="text-primary text-left">
@@ -11,7 +20,8 @@ const ContactItem = ({ contact: { name, email, phone, type } }) => {
           className={
             "badge " +
             (type === "professional" ? "badge-success" : "badge-primary")
-          } style={{float: "right"}}
+          }
+          style={{ float: "right" }}
         >
           {type}
         </span>
@@ -30,15 +40,19 @@ const ContactItem = ({ contact: { name, email, phone, type } }) => {
         )}
       </ul>
       <p>
-        <button className="btn btn-dark btn-sm">Edit</button>
-        <button className="btn btn-danger btn-sm">Delete</button>
+        <button className="btn btn-dark btn-sm" onClick={onEdit}>
+          Edit
+        </button>
+        <button className="btn btn-danger btn-sm" onClick={onDelete}>
+          Delete
+        </button>
       </p>
     </div>
   );
 };
 
 ContactItem.propTypes = {
-  contact: PropTypes.object.isRequired,
-}
+  contact: PropTypes.object.isRequired
+};
 
 export default ContactItem;

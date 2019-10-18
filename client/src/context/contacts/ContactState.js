@@ -3,6 +3,15 @@ import uuid from "uuid";
 import axios from "axios";
 import ContactContext from "./ContactContext";
 import contactReducer from "./contactReducer";
+import {
+  ADD_CONTACT,
+  DELETE_CONTACT,
+  SET_CURRENT,
+  CLEAR_CURRENT,
+  UPDATE_CONTACT,
+  FILTER_CONTACTS,
+  CLEAR_FILTER
+} from "./types";
 
 const ContactState = props => {
   const initialState = {
@@ -35,33 +44,70 @@ const ContactState = props => {
         phone: "444-444-4444",
         type: "personal"
       }
-    ]
+    ],
+    current: null,
+    filtered: null
   };
 
   const [state, dispatch] = useReducer(contactReducer, initialState);
 
   // Add contact
 
-  const addContact = (name, email, phone, type) => {
-    
-  }
+  const addContact = contact => {
+    contact.id = uuid.v4();
+    dispatch({ type: ADD_CONTACT, payload: contact });
+  };
 
   // Delete contact
 
+  const deleteContact = id => {
+    dispatch({ type: DELETE_CONTACT, payload: id });
+  };
+
   // Set current contact
 
+  const setCurrent = id => {
+    dispatch({ type: SET_CURRENT, payload: id });
+  };
+
+  // Clear current contact
+
+  const clearCurrent = () => {
+    dispatch({ type: CLEAR_CURRENT });
+  };
+
   // Update contact
+  const editContact = newContact => {
+    dispatch({ type: UPDATE_CONTACT, payload: newContact });
+  };
 
   // Filter contact
-
-  // Clear contact
+  const filterContacts = text => {
+    dispatch({ type: FILTER_CONTACTS, payload: text });
+  };
+  // Clear filter
+  const clearFilter = () => {
+    dispatch({ type: CLEAR_FILTER });
+  };
 
   return (
-    <ContactContext.Provider value={{contacts: state.contacts}}>
+    <ContactContext.Provider
+      value={{
+        contacts: state.contacts,
+        addContact,
+        editContact,
+        deleteContact,
+        setCurrent,
+        clearCurrent,
+        current: state.current,
+        filterContacts,
+        clearFilter,
+        filtered: state.filtered
+      }}
+    >
       {props.children}
     </ContactContext.Provider>
   );
 };
-
 
 export default ContactState;

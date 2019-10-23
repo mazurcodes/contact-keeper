@@ -6,7 +6,7 @@ import {
   UPDATE_CONTACT,
   FILTER_CONTACTS,
   CLEAR_FILTER
-} from "./types";
+} from "../types";
 
 export default (state, action) => {
   switch (action.type) {
@@ -50,7 +50,6 @@ export default (state, action) => {
     case FILTER_CONTACTS:
       const filtered = state.contacts.filter(contact => {
         const regex = new RegExp(`${action.payload}`, "gi");
-        console.log(contact.name.match(regex));
         return contact.name.match(regex) || contact.email.match(regex);
       });
       return {

@@ -17,6 +17,12 @@ const Navbar = ({ title, icon }) => {
           <li>
             <NavLink exact to="/about" activeStyle={{textDecoration: "underline", fontWeight: "bold"}}>About</NavLink>
           </li>
+          <li>
+            <NavLink exact to="/register" activeStyle={{textDecoration: "underline", fontWeight: "bold"}}>Register</NavLink>
+          </li>
+          <li>
+            <NavLink exact to="/login" activeStyle={{textDecoration: "underline", fontWeight: "bold"}}>Login</NavLink>
+          </li>
         </ul>
       </nav>
     </div>

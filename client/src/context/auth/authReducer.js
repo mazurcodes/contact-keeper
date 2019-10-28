@@ -12,24 +12,41 @@ import {
 export default (state, action) => {
   switch (action.type) {
     case REGISTER_SUCCESS:
-      return {};
-    case REGISTER_FAIL:
-      return {};
-    case USER_LOADED:
-      return {};
-    case AUTH_ERROR:
-      return {};
     case LOGIN_SUCCESS:
-      return {};
-    case LOGIN_FAIL:
-      return {};
-    case LOGOUT:
-      return {};
-    case CLEAR_ERRORS:
-      return {};
-    default:
+      localStorage.setItem("token", action.payload.token);
       return {
-        ...state
+        ...state,
+        token: action.payload.token,
+        isAuthenticated: true,
+        loading: false,
+        errors: null,
       };
+    case REGISTER_FAIL:
+    case LOGIN_FAIL:
+    case AUTH_ERROR:
+    case LOGOUT:
+      localStorage.removeItem("token");
+      return {
+        ...state,
+        token: null,
+        isAuthenticated: false,
+        loading: false,
+        user: null,
+        errors: action.payload
+      };
+    case USER_LOADED:
+      return {
+        ...state,
+        user: action.payload,
+        isAuthenticated: true,
+        loading: false
+      };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        errors: null
+      };
+    default:
+      return state;
   }
 };

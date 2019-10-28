@@ -1,18 +1,32 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import AuthContext from "../../context/auth/authContext";
+import AlertContext from "../../context/alert/alertContext";
 
-const Login = () => {
-  const { login } = useContext(AuthContext);
+const Login = props => {
+  const { loginUser, isAuthenticated, errors, clearErrors } = useContext(AuthContext);
+  const { setAlert } = useContext(AlertContext);
 
   const initialUser = {
-    name: "",
     email: "",
     password: "",
-    password2: ""
   };
 
   const [user, setUser] = useState(initialUser);
   const { email, password } = user;
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      setAlert("Login successful", "success");
+      props.history.push('/');
+    } else if (errors === "No such user") {
+      setAlert(errors, "danger");
+      clearErrors();
+    } else if (errors === "Password don't match") {
+      setAlert(errors, "danger");
+      clearErrors();
+    }
+    // eslint-disable-next-line
+  }, [errors, isAuthenticated, props.history]);
 
   const onChange = e => {
     setUser({
@@ -23,9 +37,12 @@ const Login = () => {
   const onSubmit = e => {
     e.preventDefault();
     //alert if passwords don't match
-    console.log("Register submit");
-    // login(user);
+    if (email === "" || password === "") {
+      setAlert("Please enter all fields", "danger");
+    } else {
+      loginUser(user);
   };
+}
   
   return (
     <div className="form-container">

@@ -22,6 +22,7 @@ const ContactForm = () => {
     } else {
       setContact(initialContact);
     }
+    // eslint-disable-next-line
   }, [contactContext, current]);
 
   const { name, email, phone, type } = contact;

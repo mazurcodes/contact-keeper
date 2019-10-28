@@ -47,7 +47,7 @@ router.post(
         type
       });
       await newContact.save();
-      res.redirect("/api/contacts");
+      res.json(newContact);
     } catch (err) {
       console.log(err);
       res.status(500).json({ error: "Server Error" });
@@ -61,23 +61,22 @@ router.post(
 router.put(
   "/:id",
   auth,
-  [
-    check("name", "Please provide contact's name")
-      .isString()
-      .not()
-      .isEmpty(),
-    check("email", "Please provide valid contact's email").isEmail(),
-    check("phone", "Please provide contact's phone").isNumeric()
-  ],
+  // [
+  //   check("name", "Please provide contact's name")
+  //     .isString()
+  //     .not()
+  //     .isEmpty(),
+  //   check("email", "Please provide valid contact's email").isEmail(),
+  //   check("phone", "Please provide contact's phone").isNumeric()
+  // ],
   async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty())
-      return res.status(422).json({ error: errors.array() });
+    // const errors = validationResult(req);
+    // if (!errors.isEmpty())
+    //   return res.status(422).json({ error: errors.array() });
 
-      const id = req.params.id;
-      const userId = req.user.id;
-      const { name, email, phone, type } = req.body;
-
+    const id = req.params.id;
+    const userId = req.user.id;
+    const { name, email, phone, type } = req.body;
 
     // create object only with updated fields
     const updateFields = {};
@@ -93,9 +92,13 @@ router.put(
         return res.status(401).json({ error: "Not authorized" });
 
       // if yes then proceed
-      await Contact.updateOne({ _id: id }, { $set: updateFields });
+      const updatedContact = await Contact.findByIdAndUpdate(
+        id,
+        { $set: updateFields },
+        { new: true }
+      ).select("-__v -user");
 
-      res.redirect("/api/contacts");
+      res.json(updatedContact);
     } catch (err) {
       console.log(err);
       res.status(500).json({ error: "Server Error" });
@@ -117,8 +120,8 @@ router.delete("/:id", auth, async (req, res) => {
       return res.status(401).json({ error: "Not authorized" });
 
     // if yes then proceed
-    await Contact.findByIdAndDelete(id);
-    res.redirect("/api/contacts");
+    const deletedContact = await Contact.findByIdAndDelete(id);
+    res.json(deletedContact);
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Server Error" });

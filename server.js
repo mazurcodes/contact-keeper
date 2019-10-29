@@ -1,27 +1,16 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const path = require('path');
-const config = require("config");
+const connectDB = require('./config/db');
 
 
 // Server
 const app = express();
 
 // Database
-const DB_CONNECTION = config.get("mongoURI");
-
-mongoose.connect(DB_CONNECTION, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true
-}, (err) => {
-  if (err) return console.log("DB connection error: ", err);
-  console.log("We're connected to DB");
-});
+connectDB();
 
 // Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ extended: false }));
 
 // Routers
 const authRouter = require('./routes/auth');
@@ -42,7 +31,6 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
   } )
 }
-console.log(process.env.NODE_ENV);
 
 // Disabling some response fields
 app.disable("x-powered-by");
@@ -50,7 +38,4 @@ app.disable("x-powered-by");
 // Server listening
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, (err) => {
-  if (err) return console.log(err);
-  console.log(`Server is up and running on http://localhost:${PORT}`);
-})
+app.listen(PORT, () =>  console.log(`Server is up and running on http://localhost:${PORT}`))

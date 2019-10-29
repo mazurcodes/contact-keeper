@@ -1,16 +1,13 @@
-client
 node_modules
-/config/production.json
-/config/default.json
 
 # REACT APP IGNORE
 # dependencies
-/client/node_modules
-/client/.pnp
-/client/.pnp.js
+# /client/node_modules
+# /client/.pnp
+# /client/.pnp.js
 
 # testing
-/client/coverage
+# /client/coverage
 
 # production
 /client/build

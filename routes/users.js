@@ -6,12 +6,12 @@ const jwt = require("jsonwebtoken");
 const config = require("config");
 const { check, validationResult } = require("express-validator");
 
-router.get("/:userName", async (req, res) => {
-  const userName = req.params.userName;
-  const regexSearch = RegExp(userName, "i");
-  const foundUser = await User.findOne({ name: regexSearch });
-  res.json(foundUser);
-});
+// router.get("/:userName", async (req, res) => {
+//   const userName = req.params.userName;
+//   const regexSearch = RegExp(userName, "i");
+//   const foundUser = await User.findOne({ name: regexSearch });
+//   res.json(foundUser);
+// });
 
 router.post(
   "/",

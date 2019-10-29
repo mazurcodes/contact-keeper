@@ -12,6 +12,13 @@ connectDB();
 // Middleware
 app.use(express.json({ extended: false }));
 
+// First meet
+app.get("/", (req, res) => {
+  res.json({
+    "msg": "hello"
+  })
+})
+
 // Routers
 const authRouter = require('./routes/auth');
 const contactsRouter = require('./routes/contacts');
@@ -24,13 +31,13 @@ app.use('/api/users', usersRouter);
 
 // Serve static assets in production
 // check if we are in production mode
-if (process.env.NODE_ENV === "production") {
-  //Set static folder
-  app.use(express.static("client/build"));
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
-  } )
-}
+// if (process.env.NODE_ENV === "production") {
+//   //Set static folder
+//   app.use(express.static("client/build"));
+//   app.get('*', (req, res) => {
+//     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
+//   } )
+// }
 
 // Disabling some response fields
 app.disable("x-powered-by");

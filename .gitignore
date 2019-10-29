@@ -1,6 +1,7 @@
+client
 node_modules
-config
-config.js
+/config/production.json
+/config/default.json
 
 # REACT APP IGNORE
 # dependencies

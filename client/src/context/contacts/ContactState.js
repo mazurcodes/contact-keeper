@@ -13,6 +13,7 @@ import {
   CONTACT_ERROR,
   GET_CONTACTS,
   CLEAR_CONTACTS,
+  CLEAR_ERRORS,
 } from "../types";
 
 const ContactState = props => {
@@ -47,7 +48,7 @@ const ContactState = props => {
     } catch (err) {
       dispatch({
         type: CONTACT_ERROR,
-        payload: err.response.error,
+        payload: err.response.data.error,
       })
     }
   }
@@ -63,7 +64,7 @@ const ContactState = props => {
     } catch (err) {
       dispatch({
         type: CONTACT_ERROR,
-        payload: err.response.error,
+        payload: err.response.data.error,
       })
     }
   };
@@ -79,7 +80,7 @@ const ContactState = props => {
     } catch (err) {
       dispatch({
         type: CONTACT_ERROR,
-        payload: err.response.error,
+        payload: err.response.data.error,
       })
     }
   };
@@ -96,7 +97,7 @@ const ContactState = props => {
     } catch (err) {
       dispatch({
         type: CONTACT_ERROR,
-        payload: err.response.error,
+        payload: err.response.data.error,
       })
     }
   };
@@ -144,6 +145,10 @@ const ContactState = props => {
   const clearContacts = () => {
     dispatch({type: CLEAR_CONTACTS});
   };
+  
+  const clearErrors = () => {
+    dispatch({type: CLEAR_ERRORS});
+  };
 
 
 
@@ -161,6 +166,7 @@ const ContactState = props => {
         clearCurrent,
         current: state.current,
         error: state.error,
+        clearErrors,
         filterContacts,
         clearFilter,
         filtered: state.filtered,

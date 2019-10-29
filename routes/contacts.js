@@ -61,18 +61,18 @@ router.post(
 router.put(
   "/:id",
   auth,
-  // [
-  //   check("name", "Please provide contact's name")
-  //     .isString()
-  //     .not()
-  //     .isEmpty(),
-  //   check("email", "Please provide valid contact's email").isEmail(),
-  //   check("phone", "Please provide contact's phone").isNumeric()
-  // ],
+  [
+    check("name", "Please provide contact's name")
+      .isString()
+      .not()
+      .isEmpty(),
+    check("email", "Please provide valid contact's email").isEmail(),
+    check("phone", "Please provide contact's phone").isNumeric()
+  ],
   async (req, res) => {
-    // const errors = validationResult(req);
-    // if (!errors.isEmpty())
-    //   return res.status(422).json({ error: errors.array() });
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      return res.status(422).json({ error: errors.array() });
 
     const id = req.params.id;
     const userId = req.user.id;

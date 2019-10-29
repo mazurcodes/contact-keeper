@@ -1,10 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
 import ContactContext from "../../context/contacts/ContactContext";
+import AlertContext from "../../context/alert/alertContext";
 
 const ContactForm = () => {
   const contactContext = useContext(ContactContext);
 
-  const { addContact, current, clearCurrent, editContact } = contactContext;
+  const { addContact, current, clearCurrent, editContact, error, clearErrors } = contactContext;
+  const { setAlert } = useContext(AlertContext);
 
   const initialContact = {
     name: "",
@@ -21,9 +23,13 @@ const ContactForm = () => {
       setContact(current);
     } else {
       setContact(initialContact);
+    };
+    if (error !== null) {
+      error.forEach(error => setAlert(error.msg, "danger"));
+      clearErrors();
     }
     // eslint-disable-next-line
-  }, [contactContext, current]);
+  }, [contactContext, current, error]);
 
   const { name, email, phone, type } = contact;
 
@@ -41,8 +47,8 @@ const ContactForm = () => {
     e.preventDefault();
     editContact(contact);
   };
-  
-  const onClear = (e) => {
+
+  const onClear = e => {
     e.preventDefault();
     clearCurrent();
   };
@@ -62,7 +68,7 @@ const ContactForm = () => {
           onChange={onChange}
         />
         <input
-          type="text"
+          type="email"
           placeholder="email"
           name="email"
           value={email}

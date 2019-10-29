@@ -8,7 +8,8 @@ import {
   CLEAR_FILTER,
   CONTACT_ERROR,
   GET_CONTACTS,
-  CLEAR_CONTACTS
+  CLEAR_CONTACTS,
+  CLEAR_ERRORS,
 } from "../types";
 
 export default (state, action) => {
@@ -62,7 +63,7 @@ export default (state, action) => {
     case FILTER_CONTACTS:
       const filtered = state.contacts.filter(contact => {
         const regex = new RegExp(`${action.payload}`, "gi");
-        return contact.name.match(regex) || contact.email.match(regex);
+        return contact.name.match(regex) || contact.email.match(regex) || contact.phone.match(regex);
       });
       return {
         ...state,
@@ -77,6 +78,11 @@ export default (state, action) => {
       return {
         ...state,
         error: action.payload
+      };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null
       };
     case CLEAR_CONTACTS:
       return {
